@@ -86,14 +86,18 @@ elif lang == "ru":
 print("Translating to German...\n") #Change 'German' to desired output language and then change translation model below.
 
 t = language_translator.translate(text=result,model_id='en-de').get_result() #This line translates the audio file into German. To change output language,
-                                                                             #change 'en-de' to 'en-**' where ** is the language code (example: 'en-fr' translages from English to French
+                                                                             #change 'en-de' to 'en-**' where ** is the language code (example: 'en-fr' translages from English to French)
+
+#Text Translation Output
 translation_output=str(t)
 tra=list(translation_output.split("'"))
 tr=tra[5]
 print("Translation: ",tr)
 
+#Import TextToSpeech
 from ibm_watson import TextToSpeechV1
 
+#TextToSpeech API Authenticator
 authenticator3=IAMAuthenticator(t2s_apikey)
 text_to_speech=TextToSpeechV1(
     authenticator=authenticator3
@@ -108,5 +112,5 @@ with open('s2s_output.wav','wb') as audio_file:
                                   voice='de-DE_ErikaV3Voice').get_result()
     audio_file.write(tts.content)
 
-#This command auto-plays the resulting audio file
+#This command auto-plays the resulting audio file using the local host's media player
 os.system("start s2s_output.wav")
